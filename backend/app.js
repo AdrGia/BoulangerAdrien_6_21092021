@@ -2,9 +2,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
+const path = require('path'); 
 
-const sauce = require('./models/sauce');
-
+const sauceRoutes = require('./routes/sauce');
 const userRoutes = require('./routes/user');
 
 mongoose.connect('mongodb+srv://Piiquante:PimentdeCayenne33@cluster0.pnpp1.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
@@ -24,28 +24,9 @@ app.use((req, res, next) => {
 
 app.use(bodyParser.json());
 
-app.post('/api/sauce', (req, res, next) => {
-	delete req.body._id;
-	const sauce = new sauce({
-		...req.body
-	});
-	sauve.save()
-		.then(() => res.status(201).json ({ message: 'Sauce enregistrée !'}))
-		.catch(error => res.status(400).json({ error }));
-});
+app.use('/images', express.static(path.join(__dirname, 'images')));
 
-app.get('/api/sauce/:id', (req, res, next) =>{
-	sauce.findOne({_id: req.params.id})
-		.then(sauce => res.status(200).json(sauce))
-		.catch(error => res.status(404).json({ error}));
-});
-
-
-app.use('/api/sauce', (req, res, next) =>{
-	sauce.find()
-	.then(sauces => res.status(200).json(sauces))
-	.catch(error => res.status(400).json({ error}));
-});	
+app.use('/api/sauce', sauceRoutes);
 app.use('/api/auth', userRoutes);
 
 
