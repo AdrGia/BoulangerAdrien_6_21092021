@@ -34,7 +34,7 @@ exports.createSauce = (req, res, next) => {
 
 exports.modifySauce = (req, res, next) => {
     if(req.file) {
-        Sauce.findOne({ _id: req.params.id})
+        Sauce.findOne({ _id: req.params.id, userId: process.env.userId})
             .then(sauce => {
                 const filename = sauce.imageUrl.split('/images/')[1];
                 fs.unlink('images/${filename}', () => {
@@ -59,7 +59,7 @@ exports.modifySauce = (req, res, next) => {
         
 
 exports.deleteSauce = (req, res, next) => {
-    Sauce.findOne({ _id: req.params.id})
+    Sauce.findOne({ _id: req.params.id, userId: process.env.userId})
         .then(sauce => {
             const filename = sauce.imageUrl.split('/images/')[1];
             fs.unlink(`images/${filename}`, () => {

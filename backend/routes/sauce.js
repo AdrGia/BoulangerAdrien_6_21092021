@@ -4,8 +4,10 @@ const router = express.Router();
 
 const sauceCtrl = require('../controllers/sauce');
 const auth = require('../middleware/auth');
+const authSauce = require('../middleware/authSauce')
 const multer = require('../middleware/multer');
 const validate = require('../middleware/validate');
+
 
 
 router.get('/', auth, sauceCtrl.getAllSauce);
